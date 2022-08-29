@@ -28,12 +28,6 @@ resetBtn.addEventListener("click", resetGame);
 
 gameStart();
 
-var eatSound;
-
-function setup() {
-    eatSound = loadSound("sounds/sound_effect_1.mp3");
-}
-
 function gameStart() {
     running = true;
     scoreText.textContent = score;
@@ -76,7 +70,6 @@ function drawFood() {
     ctx.fillRect(foodX, foodY, unitSize, unitSize);
 };
 function moveSnake() {
-    eatSound.play();
     const head = {
         x: snake[0].x + xVelocity,
         y: snake[0].y + yVelocity
