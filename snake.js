@@ -21,13 +21,14 @@ let snake = [
     { x: unitSize * 3, y: 0 },
     { x: unitSize, y: 0 },
     { x: 0, y: 0 }
+
 ];
 
 window.addEventListener("keydown", changeDirection);
 resetBtn.addEventListener("click", resetGame);
-
+var eatFoodSound = new Audio("sounds/sound_effect_1.mp3");
+var deathSound = new Audio("sounds/Bruh Sound Effect 2.mp3");
 gameStart();
-
 function gameStart() {
     running = true;
     scoreText.textContent = score;
@@ -69,16 +70,20 @@ function drawFood() {
     ctx.fillStyle = foodColor;
     ctx.fillRect(foodX, foodY, unitSize, unitSize);
 };
+
 function moveSnake() {
+    //tu pocwicz warunki
     const head = {
         x: snake[0].x + xVelocity,
         y: snake[0].y + yVelocity
     };
     snake.unshift(head);
-    if (snake[0].x == foodX && snake[0].y == foodY) {
+    const isHeadOnFood = snake[0].x == foodX && snake[0].y == foodY;
+    if (isHeadOnFood) {
         score += 1;
         scoreText.textContent = score;
         createFood();
+        eatFoodSound.play();
     }
     else {
         snake.pop();
@@ -125,6 +130,7 @@ function changeDirection(event) {
     }
 };
 function checkGameOver() {
+    // sprawdzenie czy walnal wsciane
     switch (true) {
         case (snake[0].x < 0):
             running = false;
@@ -139,11 +145,18 @@ function checkGameOver() {
             running = false;
             break;
     }
+    // zrozum co to sa petle
+    // sprawdzenie czy zjadl sie sam
     for (let i = 1; i < snake.length; i += 1) {
         if (snake[i].x == snake[0].x && snake[i].y == snake[0].y) {
             running = false
         }
+
     }
+    if (running == false) {
+        deathSound.play();
+    }
+
 };
 function displayGameOver() {
     ctx.font = "50px MV Boli";
